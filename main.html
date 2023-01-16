@@ -20,19 +20,142 @@
       <li>Loading Tapas...</li>
     </ul>
     <form class="add-items">
-      <input type="text" name="item" placeholder="Item Name" required>
-      <input type="submit" value="+ Add Item">
+      <input type="text" name="item" placeholder="Item Name" required id="input">
+      <input type="submit" value="+ Add Item" id="submit">
+     
     </form>
   </div>
 
 <script>
-  const addItems = document.querySelector('.add-items');
-  const itemsList = document.querySelector('.plates');
-  const items = [];
+  const todoForm = document.querySelector('.add-items');
+  const plates = document.querySelector('.plates');
+  const todoInput = document.querySelector("#input");
+   let index =0;
+  let items = [];
+  renderTodos();
+  todoForm.addEventListener('submit', (event)=>{ // add an eventListener on form, and listen for submit event
+    
+    event.preventDefault(); // prevent the page from reloading when submitting the form
+   
+    addTodo(todoInput.value); // call addTodo function with input box current value
+    renderTodos();
+  });
+
+
+function addTodo(plate) { // function to add todo
+
+  if (plate !== '') {
+    // make a todo object, which has id, name, and completed properties
+    
+    const plate = { id: `${index}`,value:todoInput.value, done: false };
+          items.push(plate); // then add it to todos array
+          addToLocalStorage(items); // then store it in localStorage
+          getFromLocalStorage();
+          todoInput.value = ''; // finally clear the input box value
+          index++
+   }
+}
+
+// function to add todos to local storage
+
+  function addToLocalStorage(items) {
+      
+      localStorage.setItem('items', JSON.stringify(items));
+      
+      
+    }
+
+  function getFromLocalStorage() {
+    const hasitem = localStorage.getItem('items');
+
+    if (hasitem) {
+
+      items = JSON.parse(hasitem);
+
+    }
+}
+
+function renderTodos() { // function to render given todos to screen
+
+  getFromLocalStorage();
+
+  plates.innerHTML = '';
+
+  items.forEach((plate,index)=>{  
+
+    const li = document.createElement('li');
+          li.setAttribute("class","menu")
+          li.innerHTML = `
+                <input type="checkbox"
+                 class="input"
+                 data-index=${index} 
+                 id="item${index}" 
+                 ${plate.done ? 'checked' : ''} >
+               <label for="item${index}">
+                 ${plate.value}
+                 </label>
+                <button class="delete-button" 
+                data-index=${index} >
+                X</button>
+              `;
+   
+           plates.append(li);
+      
+    });
+}
+  let flag;
+  let btns = document.getElementsByClassName("delete-button");
+  document.getElementsByClassName("input").eneble= true;
+  let chkBoxes = document.getElementsByClassName("input");
+
+  for (let i = 0; i < chkBoxes.length; i++) { 
+
+        chkBoxes[i].addEventListener("click",(event)=>{ 
+          flag = event.target.getAttribute('data-index');
+          console.log(event.target.getAttribute('data-index'));
+          
+        })
+       
+      }
+     
+
+  for (let i = 0; i < btns.length; i++) {
+  
+    btns[i].addEventListener('click',(event)=>{ 
+     
+      if (flag == event.target.getAttribute('data-index')) {
+          localStorage.clear();
+          event.target.parentElement.remove();
+          newItem = items.splice(event.target.getAttribute('data-index'),1)
+          console.log(newItem);
+            console.log(items);
+          addToLocalStorage(items);
+      }      
+       
+   })
+}
+
+      // btns.addEventListener('click',(event)=>{
+      //   //  index = event.target.getAttribute('data-index');
+      //   console.log(event.target.getAttribute('data-index')); 
+        
+      //   // if (flag === event.target.getAttribute('data-index')) {
+      //     console.log(items); 
+      //     items.splice(event.target.getAttribute('data-index'),1);
+      //     event.target.parentElement.remove();
+     
+        // }
+      
+   
+    //     // console.log( newItems);
+     
+    // })
+  
+    
+
+
 
 </script>
 
-
 </body>
 </html>
-

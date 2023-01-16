@@ -46,10 +46,9 @@ h2 {
 }
 
 .plates li {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 10px 0;
-  font-weight: 100;
+  font-weight: 600;
   display: flex;
+  justify-content: space-evenly;
 }
 
 .plates label {
@@ -76,6 +75,13 @@ h2 {
 
 .add-items input {
   padding: 10px;
-  outline: 0;
+  outline: 2;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.item{
+  background: #c0e0f6;
+  padding: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
